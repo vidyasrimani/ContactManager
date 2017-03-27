@@ -74,17 +74,25 @@ public class AddActivity extends AppCompatActivity {
             contactDetail.setPhone(phone.getText().toString());
             contactDetail.setEmail(email.getText().toString());
             contactDetail.setDob(dob.getText().toString());
-            if(val1!=null && !val1.isEmpty())
-            {
-                ContactDetails.contactList.set(Integer.parseInt(val1),contactDetail);
+            if(fname.getText().toString().isEmpty()){
+                Toast.makeText(AddActivity.this, "First Name Empty", Toast.LENGTH_LONG).show();
             }
-            else
-            {
-                ContactDetails.contactList.add(contactDetail);
+            else{
+                if(val1!=null && !val1.isEmpty())//for update
+                {
+                    ContactDetails.contactList.set(Integer.parseInt(val1),contactDetail);
+                    Toast.makeText(AddActivity.this, "Changes updated", Toast.LENGTH_LONG).show();
+                }
+                else//for add
+                {
+                    ContactDetails.contactList.add(contactDetail);
+                    Toast.makeText(AddActivity.this, "Contact Added", Toast.LENGTH_LONG).show();
+                }
+
+                Intent launchActivity1= new Intent(AddActivity.this,MainActivity.class);
+                startActivity(launchActivity1);
             }
-            Toast.makeText(AddActivity.this, "Saved Successfully ", Toast.LENGTH_LONG).show();
-            Intent launchActivity1= new Intent(AddActivity.this,MainActivity.class);
-            startActivity(launchActivity1);
+
         }
         else if(v.getId()==R.id.delIcon)
         {
