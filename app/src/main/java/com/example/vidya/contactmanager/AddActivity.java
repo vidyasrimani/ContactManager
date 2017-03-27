@@ -4,29 +4,66 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.File;
-
-import static android.os.Environment.*;
-
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 /**
- * Created by Vidya on 3/25/2017.
+ * Created by shrutibidada on 3/21/17.
  */
-public class AddActivity {
-    public String path= getExternalStorageDirectory().getAbsolutePath()+"/ContactManager";
 
+public class AddActivity extends AppCompatActivity {
+
+    public String path= Environment.getExternalStorageDirectory().getAbsolutePath()+"/ContactManager";
+    File file= new File(path+"/contactManager.txt");
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        FloatingActionButton fab2 = (FloatingActionButton)findViewById(R.id.delIcon);
+        fab2.setEnabled(false);
+        String val1=getIntent().getStringExtra("indexOfList");
+        if(val1!=null && !val1.isEmpty())
+        {
+            setTitle("Edit Contact");
+            int id=Integer.parseInt(val1);
+            ContactDetails contactDetail=ContactDetails.contactList.get(id);
+            ((EditText)findViewById(R.id.fname)).setText(contactDetail.getFname());
+            ((EditText)findViewById(R.id.lname)).setText(contactDetail.getLname());
+            ((EditText)findViewById(R.id.phone)).setText(contactDetail.getPhone());
+            ((EditText)findViewById(R.id.email)).setText(contactDetail.getEmail());
+            ((EditText)findViewById(R.id.dob)).setText(contactDetail.getDob());
+            fab2.setEnabled(true);
+        }
     }
 
     public void onButtonClick(View v){
-        if(v.getId()==R.id.savebutton)
+        String val1=getIntent().getStringExtra("indexOfList");
+        // if(v.getId()==R.id.savebutton ||v.getId()==R.id.saveIcon )
+        if(v.getId()==R.id.saveIcon )
         {
-            EditText fname=(EditText)findViewById(R.id.fname);
+            EditText fname=(EditText)findViewById(R.id.fname) ;
             EditText lname=(EditText)findViewById(R.id.lname);
             EditText phone=(EditText)findViewById(R.id.phone);
             EditText email=(EditText)findViewById(R.id.email);
@@ -37,29 +74,49 @@ public class AddActivity {
             contactDetail.setPhone(phone.getText().toString());
             contactDetail.setEmail(email.getText().toString());
             contactDetail.setDob(dob.getText().toString());
-            ContactDetails.contactList.add(contactDetail);
-            String saveString=fname.getText().toString()+"\t"+lname.getText().toString()+"\t";
-            saveString+=phone.getText().toString()+"\t"+email.getText().toString()+"\t"+dob.getText().toString();
-            File file= new File(path+"/contactManager.txt");
-            save(file,saveString);
+            if(val1!=null && !val1.isEmpty())
+            {
+                ContactDetails.contactList.set(Integer.parseInt(val1),contactDetail);
+            }
+            else
+            {
+                ContactDetails.contactList.add(contactDetail);
+            }
+            Toast.makeText(AddActivity.this, "Saved Successfully ", Toast.LENGTH_LONG).show();
             Intent launchActivity1= new Intent(AddActivity.this,MainActivity.class);
             startActivity(launchActivity1);
-
         }
+        else if(v.getId()==R.id.delIcon)
+        {
+            if(val1!=null && !val1.isEmpty())
+            {
+                ContactDetails.contactList.remove(Integer.parseInt(val1));
+                Toast.makeText(AddActivity.this, "Deleted Successfully ", Toast.LENGTH_LONG).show();
+                Intent launchActivity1= new Intent(AddActivity.this,MainActivity.class);
+                startActivity(launchActivity1);
+            }
+        }
+        save();
     }
-    public void save(File file, String str)
+    // writes the data into the text file on every action that is performed
+    public void save()
     {
         FileOutputStream fos=null;
         try{
-            fos=new FileOutputStream(file, true);
+            fos=new FileOutputStream(file,false);
         }
         catch (FileNotFoundException e)
         {
             e.printStackTrace();
         }
         try{
-            fos.write(str.getBytes());
-            fos.write("\n".getBytes());
+            for(int i=0;i<ContactDetails.contactList.size();i++)
+            {
+                ContactDetails contact=ContactDetails.contactList.get(i);
+                String data= contact.getFname()+"\t"+contact.getLname()+"\t"+contact.getPhone()+"\t"+contact.getEmail()+"\t"+contact.getDob();
+                fos.write(data.getBytes());
+                fos.write("\n".getBytes());
+            }
         }
         catch (IOException e)
         {
@@ -127,16 +184,18 @@ public class AddActivity {
         return true;
     }*/
 
-    // @Override
-//public boolean onOptionsItemSelected(MenuItem item) {
-//// Handle action bar item clicks here. The action bar will
-//// automatically handle clicks on the Home/Up button, so long
-//// as you specify a parent activity in AndroidManifest.xml.
-//int id = item.getItemId();
-////noinspection SimplifiableIfStatement
-//if (id == R.id.action_settings) {
-//return true;
-//}
-//return super.onOptionsItemSelected(item);
-//}
+   /* @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }*/
+
 }
+

@@ -8,39 +8,34 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-
-
-    String data;
-    private String file = "contactManager.txt";
     List<Map<String, String>> contactList = new ArrayList<Map<String,String>>();
-    List<String> contacts = new ArrayList<>();
     public String path= Environment.getExternalStorageDirectory().getAbsolutePath()+"/ContactManager";
-    //File file = new File(sdcard,"contactManager.txt");
+    File file = new File(path+"/contactManager.txt");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,77 +44,94 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               // startActivity(new Intent(MainActivity.this, NewActivity.class));
-            }
-        });
-
-        initList();//Initialize the list view
-
-         ListView lv = (ListView) findViewById(R.id.listView);
+        if(file.exists())
+            read();
+        else
+            Toast.makeText(getBaseContext(),"No Contacts",Toast.LENGTH_SHORT).show();
+        ListView lv = (ListView) findViewById(R.id.listView);
         SimpleAdapter simpleAapt = new SimpleAdapter(this, contactList, android.R.layout.simple_list_item_1, new String[] {"person"}, new int[] {android.R.id.text1});
-        lv.setAdapter(simpleAapt);
-        //lv.setOnItemClickListener();
-        //lv.setOnItemClickListener(new OnItemClickListenerListViewItem());
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedFromList = parent.getAdapter().getItem(position).toString();
-
                 String[] recordValue = selectedFromList.split("\t");
-                Toast.makeText(MainActivity.this, "you clicked "+ recordValue[1], Toast.LENGTH_LONG).show();
+                Intent activity2 = new Intent (MainActivity.this, AddActivity.class);
+                activity2.putExtra("indexOfList",Integer.toString(position));
+                //activity2.PutExtra ("MyData", "Data from Activity1");
+                startActivity(activity2);
+
             }
         });
-
-
-
+        lv.setAdapter(simpleAapt);
     }
 
-    private void initList() {
-        save();
-
-        read();
-
-
-    }
     public void read()
     {
-
-
         try {
-            FileInputStream fin = openFileInput(file);
-
+            FileInputStream fin = new FileInputStream(file);
             InputStreamReader isr = new InputStreamReader(fin);
             BufferedReader bufferedReader = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();
             String contents;
-            while ((contents = bufferedReader.readLine()) != null) {
-                sb.append(contents);
-                contacts.add(contents);
+            if((ContactDetails.contactList==null||ContactDetails.contactList.isEmpty()) &&  file.exists())
+            {
+                try{
+                    // Open the file that is the first
+                    // command line parameter
+                    FileInputStream fstream = new FileInputStream(file);
+                    // Get the object of DataInputStream
+                    DataInputStream in = new DataInputStream(fstream);
+                    BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                    String strLine;
+                    //Read File Line By Line
+                    while ((strLine = br.readLine()) != null)   {
+                        // Print the content on the console
+                        String [] str=strLine.split("\t");
+                        ContactDetails contactDetail=new ContactDetails();
+                        if(str.length>0)
+                        {
+                            contactDetail.setFname(str[0]);
+                            if(str.length>1)
+                                contactDetail.setLname(str[1]);
+                            else
+                                contactDetail.setLname("");
+                            if(str.length>2)
+                                contactDetail.setPhone(str[2]);
+                            else
+                                contactDetail.setPhone("");
+                            if(str.length>3)
+                                contactDetail.setEmail(str[3]);
+                            else
+                                contactDetail.setEmail("");
+                            if(str.length>4)
+                                contactDetail.setDob(str[4]);
+                            else
+                                contactDetail.setDob("");
+                        }
+                        ContactDetails.contactList.add(contactDetail);
+                    }
+                    //Close the input stream
+                    in.close();
+                }catch (Exception e){//Catch exception if any
+                    System.err.println("Error: " + e.getMessage());
+                }
             }
-            for (int i = 0; i < contacts.size(); i++) {
+           /* while ((contents = bufferedReader.readLine()) != null) {
+                //sb.append(contents);
+                contacts.add(contents);
+            }*/
+           /* for (int i = 0; i < contacts.size(); i++) {
                 String[] recordValue = contacts.get(i).split("\t");
+                if(recordValue.length>=2)
                 contactList.add(createContact("person", recordValue[0]+"\t"+recordValue[1]+"\t"+recordValue[2]));
+            }*/
+            Collections.sort(ContactDetails.contactList);
+            for (int i = 0; i < ContactDetails.contactList.size(); i++) {
+                contactList.add(createContact("person", ContactDetails.contactList.get(i).getFname()+"\t"+ContactDetails.contactList.get(i).getLname()+" | "+ContactDetails.contactList.get(i).getPhone()));
             }
 
         }
         catch(Exception e){
-        }
-    }
-    public void save()
-    {
-
-        data="Vidya\tMani\t4692799257\tsm.vidya@gmail.com\t11/25/1992\rShruti\tBidada\t1231231223\tshrti.bidada@gmail.com\t12/12/1992\n";
-        try {
-            FileOutputStream fOut = openFileOutput(file,Context.MODE_PRIVATE);
-            fOut.write(data.getBytes());
-            fOut.close();
-            Toast.makeText(getBaseContext(),"file saved",Toast.LENGTH_SHORT).show();
-        }
-        catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -142,13 +154,20 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        /*int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
+    public void goToAddContact(View v)
+    {
+        Intent addContact=new Intent(MainActivity.this,AddActivity.class);
+        startActivity(addContact);
+    }
+
+
 }
