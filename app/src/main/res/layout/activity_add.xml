@@ -16,136 +16,116 @@
 
     <TextView
         android:id="@+id/fnameText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="15dp"
         android:text="First Name"
         android:layout_below="@+id/appBarLayout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="8dp" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="25dp" />
 
     <EditText
         android:id="@+id/fname"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
         android:text=""
         android:layout_below="@+id/fnameText"
-        android:layout_alignLeft="@+id/fnameText"
         android:layout_alignStart="@+id/fnameText" />
 
     <TextView
         android:id="@+id/lnameText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/fname"
-        android:layout_alignStart="@+id/fname"
+        android:paddingTop="10dp"
+        android:text="Last Name"
         android:layout_below="@+id/fname"
-        android:layout_marginTop="13dp"
-        android:text="Last Name" />
+        android:layout_alignStart="@+id/fnameText" />
 
     <EditText
         android:id="@+id/lname"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
         android:text=""
         android:layout_below="@+id/lnameText"
-        android:layout_alignLeft="@+id/lnameText"
         android:layout_alignStart="@+id/lnameText" />
 
     <TextView
         android:id="@+id/phoneText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/lname"
-        android:layout_alignStart="@+id/lname"
+        android:paddingTop="10dp"
+        android:text="Phone"
         android:layout_below="@+id/lname"
-        android:layout_marginTop="17dp"
-        android:text="Phone" />
+        android:layout_alignStart="@+id/lnameText" />
 
     <EditText
         android:id="@+id/phone"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="phone"
         android:layout_below="@+id/phoneText"
-        android:layout_alignLeft="@+id/phoneText"
+        android:layout_alignEnd="@+id/lname"
         android:layout_alignStart="@+id/phoneText" />
 
 
     <TextView
         android:id="@+id/emailText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
         android:text="E-Mail"
-        android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/phoneText"
-        android:layout_alignEnd="@+id/phoneText" />
+        android:layout_below="@+id/phone"
+        android:layout_alignStart="@+id/phoneText" />
 
     <EditText
         android:id="@+id/email"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:layout_marginTop="10dp"
         android:layout_below="@+id/emailText"
-        android:layout_alignLeft="@+id/emailText"
-        android:layout_alignStart="@+id/phone" />
+        android:layout_alignEnd="@+id/phone"
+        android:layout_alignStart="@+id/emailText" />
 
     <TextView
         android:id="@+id/dobText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
         android:text="DOB"
         android:layout_below="@+id/email"
-        android:layout_alignLeft="@+id/email"
-        android:layout_alignStart="@+id/email"
-        android:layout_marginTop="21dp" />
+        android:layout_alignStart="@+id/emailText" />
 
     <EditText
         android:id="@+id/dob"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/emailText"
-        android:layout_alignStart="@+id/emailText"
-        android:layout_alignTop="@+id/dobText"
-        android:layout_marginTop="17dp"
         android:ems="10"
-        android:inputType="date" />
-
-    <!--<Button
-        android:id="@+id/savebutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="7dp"
-        android:text="Save"
-        android:onClick="onButtonClick"
-        android:layout_above="@+id/delIcon"
-        android:layout_alignLeft="@+id/dobText"
-        android:layout_alignStart="@+id/dobText" />-->
+        android:inputType="date"
+        android:layout_below="@+id/dobText"
+        android:layout_alignStart="@+id/dobText" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/delIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginStart="50dp"
+        android:layout_marginLeft="45dp"
         android:onClick="onButtonClick"
         android:clickable="true"
         app:fabSize="normal"
         app:srcCompat="@android:drawable/ic_menu_delete"
-        android:layout_alignTop="@+id/saveIcon"
-        android:layout_toRightOf="@+id/fnameText"
-        android:layout_toEndOf="@+id/fnameText"
-        app:backgroundTint="@color/colorPrimary"
-        app:elevation="5dp" />
+        app:backgroundTint="#c97575"
+        app:elevation="7dp"
+        android:layout_marginStart="56dp"
+        style="@style/Base.Widget.AppCompat.ActionBar"
+        android:layout_below="@+id/dob"
+        android:layout_alignStart="@+id/dobText" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/saveIcon"
@@ -155,14 +135,13 @@
         app:fabSize="normal"
         app:srcCompat="@android:drawable/ic_menu_save"
         android:onClick="onButtonClick"
-        app:backgroundTint="@color/colorPrimary"
-        app:elevation="5dp"
-        android:layout_marginBottom="10dp"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/delIcon"
-        android:layout_toEndOf="@+id/delIcon"
+        app:backgroundTint="#31b963"
+        app:elevation="7dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp" />
+        android:layout_marginRight="45dp"
+        android:layout_marginEnd="67dp"
+        android:layout_below="@+id/dob"
+        android:layout_alignEnd="@+id/dobText" />
 
 
 </RelativeLayout>
