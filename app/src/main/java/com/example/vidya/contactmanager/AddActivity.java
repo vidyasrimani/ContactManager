@@ -1,3 +1,4 @@
+//package com.example.shruti.contactmanager;
 package com.example.vidya.contactmanager;
 
 import android.content.Intent;
@@ -32,15 +33,21 @@ import java.io.InputStreamReader;
  */
 
 public class AddActivity extends AppCompatActivity {
-
+    /*
+    creating a global path and file variable for the txt file
+     */
     public String path= Environment.getExternalStorageDirectory().getAbsolutePath()+"/ContactManager";
     File file= new File(path+"/contactManager.txt");
+    /*
+    Funtion:onCreate
+    Initializes the instance of add contact page and makes the necessary calls in case of edit and delete.
+    Author: Shruti Bidada (sgb160130)
+     */
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         FloatingActionButton fab2 = (FloatingActionButton)findViewById(R.id.delIcon);
         fab2.setEnabled(false);
         String val1=getIntent().getStringExtra("indexOfList");
@@ -57,10 +64,13 @@ public class AddActivity extends AppCompatActivity {
             fab2.setEnabled(true);
         }
     }
-
+    /*
+        Function:onButtonClick
+        Handles the action of save and delete button on add contact screen.
+        Author: Shruti bidada (sgb160130)
+     */
     public void onButtonClick(View v){
         String val1=getIntent().getStringExtra("indexOfList");
-        // if(v.getId()==R.id.savebutton ||v.getId()==R.id.saveIcon )
         if(v.getId()==R.id.saveIcon )
         {
             EditText fname=(EditText)findViewById(R.id.fname) ;
@@ -103,10 +113,14 @@ public class AddActivity extends AppCompatActivity {
                 Intent launchActivity1= new Intent(AddActivity.this,MainActivity.class);
                 startActivity(launchActivity1);
             }
-        }
+        };
         save();
     }
-    // writes the data into the text file on every action that is performed
+    /*
+        Function: Save
+        writes the data into the text file on every action that is performed
+        Author: Vidya Sri Mani (vxm163230)
+     */
     public void save()
     {
         FileOutputStream fos=null;
@@ -132,78 +146,7 @@ public class AddActivity extends AppCompatActivity {
         }
 
     }
-  /*  @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        File dir=new File(path);
-        dir.mkdirs();
-        *//*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*//*
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        File file=new File(path+"/contactManager.txt");
-      *//*  if((ContactDetails.contactList==null||ContactDetails.contactList.isEmpty()) &&  file.exists())
-        {
-            try{
-                // Open the file that is the first
-                // command line parameter
-                FileInputStream fstream = new FileInputStream(file);
-                // Get the object of DataInputStream
-                DataInputStream in = new DataInputStream(fstream);
-                BufferedReader br = new BufferedReader(new InputStreamReader(in));
-                String strLine;
-                //Read File Line By Line
-                while ((strLine = br.readLine()) != null)   {
-                    // Print the content on the console
-                   String [] str=strLine.split("    ");
-                   ContactDetails contactDetail=new ContactDetails();
-                    if(str.length>0)
-                    {
-                        contactDetail.setFname(str[0]);
-                        if(str.length>1)
-                        contactDetail.setLname(str[1]);
-                        if(str.length>2)
-                        contactDetail.setPhone(str[2]);
-                        if(str.length>3)
-                        contactDetail.setEmail(str[3]);
-                        if(str.length>4)
-                        contactDetail.setDob(str[4]);
-                    }
-                }
-                //Close the input stream
-                in.close();
-            }catch (Exception e){//Catch exception if any
-                System.err.println("Error: " + e.getMessage());
-            }
-        }*//*
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }*/
-
-   /* @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
 
 }
 

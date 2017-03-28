@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 /**
  * Created by Vidya on 3/27/2017.
+ * Creates a home screen splash and adds animation to it
  */
 public class Splash extends Activity {
     @Override
@@ -23,6 +24,7 @@ public class Splash extends Activity {
 
         iv.startAnimation(an);
         an.setAnimationListener(new Animation.AnimationListener() {
+
             @Override
             public void onAnimationStart(Animation animation) {
 
